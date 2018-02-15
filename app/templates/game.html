@@ -1,0 +1,61 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+        <title>{{ title }}</title>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/style.css') }}"/>
+
+  <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
+  <![endif]-->
+</head>
+
+<body>
+  	<p>{{name}} {{time}}</p>
+
+	<table style="border-color: green; background-color: black; width: 214px; height: 201px; margin-left: auto; margin-right: auto;" border="2">
+		<tbody>
+			<tr>
+				<td style="width: 64px; text-align: center; color:white" onClick="myFunction(0)"
+				id = "td0"></td>
+				<td style="width: 64px; text-align: center;" onClick="myFunction(1)"
+				id = "td1"></td>
+				<td style="width: 64px; text-align: center;" onClick="myFunction(2)"
+				id = "td2"></td>
+			</tr>
+			<tr>
+				<td style="width: 64px; text-align: center;" onClick="myFunction(3)"
+				id = "td3"></td>
+				<td style="width: 64px; text-align: center;" onClick="myFunction(4)"
+				id = "td4"></td>
+				<td style="width: 64px; text-align: center;" onClick="myFunction(5)"
+				id = "td5"></td>
+			</tr>
+			<tr>
+				<td style="width: 64px; text-align: center;" onClick="myFunction(6)"
+				id = "td6"></td>
+				<td style="width: 64px; text-align: center;" onClick="myFunction(7)"
+				id = "td7"></td>
+				<td style="width: 64px; text-align: center;" onClick="myFunction(8)"
+				id = "td8"></td>
+			</tr>
+		</tbody>
+	</table>
+<p id = "display"></p>
+
+<script>
+function myFunction(value) {
+    document.getElementById("display").innerHTML = "Hello "+ value;
+    var td1 = document.getElementById('td1');
+	var text = document.createTextNode("X");
+	if (td1.hasChildNodes()) {
+	    td1.removeChild(td1.childNodes[0]);
+	}
+	td1.appendChild(text);
+}
+</script>
+
+</body>
+</html>
