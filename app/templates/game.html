@@ -6,6 +6,9 @@
 
         <title>{{ title }}</title>
         <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/style.css') }}"/>
+       <script src="http://code.jquery.com/jquery-3.3.1.min.js"
+              integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+              crossorigin="anonymous"></script>
 
   <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
@@ -46,7 +49,10 @@
 <p id = "display"></p>
 
 <script>
+var grid = ["","","","","","","","",""];
+
 function myFunction(value) {
+    const url = 'http://localhost:3000/ttt/play';
     document.getElementById("display").innerHTML = "Hello "+ value;
     var td1 = document.getElementById('td'+value);
 	var text = document.createTextNode("X");
@@ -54,6 +60,18 @@ function myFunction(value) {
 	    td1.removeChild(td1.childNodes[0]);
 	}
 	td1.appendChild(text);
+    grid[value]="X" ;
+    console.log(grid);
+    $.ajax({
+        type: 'POST',
+        dataType: 'jsonp',
+        contentType: "application/javascript",
+        url: 'http://localhost:3000/ttt/play',
+        grid: grid,
+        success: function(grid) {
+           console.log("Friend added!", grid); //the new item is returned with an ID
+        }
+    });
 }
 </script>
 

@@ -12,7 +12,6 @@ def index():
         if request.method == "POST":
             name = request.form['name']
             return render_template('game.html', name=name, time = str(now))
-
         else:
             return render_template('index.html', title='Home')
 
