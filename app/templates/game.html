@@ -6,9 +6,8 @@
 
         <title>{{ title }}</title>
         <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/style.css') }}"/>
-       <script src="http://code.jquery.com/jquery-3.3.1.min.js"
-              integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-              crossorigin="anonymous"></script>
+       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
 
   <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
@@ -21,28 +20,19 @@
 	<table style="border-color: green; background-color: black; width: 214px; height: 201px; margin-left: auto; margin-right: auto;" border="2">
 		<tbody>
 			<tr>
-				<td style="width: 50px; text-align: center; color:white" onClick="myFunction(0)"
-				id = "td0"></td>
-				<td style="width: 50px; text-align: center; color:white" onClick="myFunction(1)"
-				id = "td1"></td>
-				<td style="width: 50px; text-align: center; color:white" onClick="myFunction(2)"
-				id = "td2"></td>
+				<td style="width: 50px; text-align: center; color:white" onClick="myFunction(0)" id = "td0"></td>
+				<td style="width: 50px; text-align: center; color:white" onClick="myFunction(1)" id = "td1"></td>
+				<td style="width: 50px; text-align: center; color:white" onClick="myFunction(2)" id = "td2"></td>
 			</tr>
 			<tr>
-				<td style="width: 50px; text-align: center; color:white" onClick="myFunction(3)"
-				id = "td3"></td>
-				<td style="width: 50px; text-align: center; color:white" onClick="myFunction(4)"
-				id = "td4"></td>
-				<td style="width: 50px; text-align: center; color:white" onClick="myFunction(5)"
-				id = "td5"></td>
+				<td style="width: 50px; text-align: center; color:white" onClick="myFunction(3)" id = "td3"></td>
+				<td style="width: 50px; text-align: center; color:white" onClick="myFunction(4)" id = "td4"></td>
+				<td style="width: 50px; text-align: center; color:white" onClick="myFunction(5)" id = "td5"></td>
 			</tr>
 			<tr>
-				<td style="width: 50px; text-align: center; color:white" onClick="myFunction(6)"
-				id = "td6"></td>
-				<td style="width: 50px; text-align: center; color:white " onClick="myFunction(7)"
-				id = "td7"></td>
-				<td style="width: 50px; text-align: center; color:white" onClick="myFunction(8)"
-				id = "td8"></td>
+				<td style="width: 50px; text-align: center; color:white" onClick="myFunction(6)" id = "td6"></td>
+				<td style="width: 50px; text-align: center; color:white " onClick="myFunction(7)" id = "td7"></td>
+				<td style="width: 50px; text-align: center; color:white" onClick="myFunction(8)" id = "td8"></td>
 			</tr>
 		</tbody>
 	</table>
@@ -50,9 +40,8 @@
 
 <script>
 var grid = ["","","","","","","","",""];
-
 function myFunction(value) {
-    const url = 'http://localhost:3000/ttt/play';
+   
     document.getElementById("display").innerHTML = "Hello "+ value;
     var td1 = document.getElementById('td'+value);
 	var text = document.createTextNode("X");
@@ -63,16 +52,52 @@ function myFunction(value) {
     grid[value]="X" ;
     console.log(grid);
     $.ajax({
-        type: 'POST',
-        dataType: 'jsonp',
-        contentType: "application/javascript",
-        url: 'http://localhost:3000/ttt/play',
-        grid: grid,
-        success: function(grid) {
-           console.log("Friend added!", grid); //the new item is returned with an ID
-        }
-    });
+            url: '/getResult',
+            type: 'POST',
+            data: {data: JSON.stringify(grid)},
+            success: function(response) {
+            	console.log("1: "+grid);
+            	console.log(response);
+                grid = response.grid;
+                console.log(grid);
+                fillTable(grid);
+                if(response.winner!=""){
+                	alert(response.winner+" is the winner");
+                	clearTable();
+                }
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
 }
+
+function fillTable(grid) {
+	for (var i = 0; i < 9; i++) {
+		if(grid[i]!=""){
+			var td1 = document.getElementById('td'+i);
+			var text = document.createTextNode(grid[i]);
+			if (!td1.hasChildNodes()) {
+			    td1.appendChild(text);
+			}
+			
+		}
+	}
+
+}
+function clearTable(){
+	for (var i = 0; i < 9; i++) {	
+		var td1 = document.getElementById('td'+i);
+		var text = document.createTextNode("");
+		if (td1.hasChildNodes()) {
+		    td1.removeChild(td1.childNodes[0]);
+		}
+		
+	}
+	grid = ["","","","","","","","",""];
+}
+	
+
 </script>
 
 </body>

@@ -1,7 +1,9 @@
-from flask import  Flask, render_template, redirect, request
+from flask import  Flask, render_template, redirect, request, jsonify
 from app import app
 from wtforms import Form, TextField, TextAreaField, validators, StringField, SubmitField
 import datetime
+import simplejson as json
+import requests
 
 now = datetime.datetime.now()
 
@@ -20,3 +22,10 @@ def index():
         return render_template('index.html', title='Home')
 
     '''return redirect('/ttt')'''
+@app.route('/getResult', methods=['POST'])
+def getResult():
+    print(request.form['data'])
+    send_data = json.loads(request.form['data'])
+
+    r = requests.post('http://localhost:7000/ttt/play/',json= {"grid" : send_data})
+    return jsonify(r.json())
